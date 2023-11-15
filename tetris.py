@@ -197,19 +197,19 @@ class Tetris:
     # Set the fall speed interval based on level
     def set_fall_interval(self):
         if self.level < 9:
-            self.fall_interval = (48 - (5 * (self.level + 1))) * 61;
+            self.fall_interval = (48 - (5 * (self.level + 1))) * FPS;
         elif self.level == 9:
-            self.fall_interval = 6 * 61;
+            self.fall_interval = 6 * FPS;
         elif self.level < 13:
-            self.fall_interval = 5 * 61;
+            self.fall_interval = 5 * FPS;
         elif self.level < 16:
-            self.fall_interval = 4 * 61;
+            self.fall_interval = 4 * FPS;
         elif self.level < 16:
-            self.fall_interval = 3 * 61;
+            self.fall_interval = 3 * FPS;
         elif self.level < 19:
-            self.fall_interval = 2 * 61;
+            self.fall_interval = 2 * FPS;
         else:
-            self.fall_interval = 1 * 61;
+            self.fall_interval = 1 * FPS;
 
     def generate_rand_tetronimo(self) -> Tetronimo:
         rand_tet_type_num: int = random.randint(1, 7)

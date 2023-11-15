@@ -2,8 +2,8 @@ import sys
 import pygame
 from enum import Enum
 
-# 60 FPS
-FRAME_LENGTH: int = 1000 // 60
+FPS: int = 60
+FRAME_LENGTH: int = 1000 // FPS
 
 STARTING_LEVEL: int = 0
 QUEUE_SIZE: int = 10
