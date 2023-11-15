@@ -164,6 +164,39 @@ Actual: {self.get_actual_blocks_on_grid()}
                 if can_move:
                     self.origin[1] -= 1
 
+    def rotate(self, key: InputKey, tetris):
+        if self.type == TetType.O: # O piece does not rotate
+            return
+        # returns a copy of the rotated piece's positions. We use this to check
+        # for any overlaps or out of bounds before actually performing the
+        # rotation
+        def get_rotated_copy(key: InputKey) -> list[(int,int)]:
+            rotated_blocks = self.blocks.copy()
+            if key == InputKey.LROT:
+                for i in range(len(rotated_blocks)):
+                    x, y = rotated_blocks[i]
+                    rotated_blocks[i] = (y, -x)
+            elif key == InputKey.RROT:
+                for i in range(len(rotated_blocks)):
+                    x, y = rotated_blocks[i]
+                    rotated_blocks[i] = (-y, x)
+            return rotated_blocks
+
+        can_rotate: bool = True
+        rotated_blocks = get_rotated_copy(key)
+
+        for block in rotated_blocks:
+            rx, ry = block
+            rx += self.origin[0]
+            ry += self.origin[1]
+            if (rx < 0 or rx >= GW or ry < 0 or ry >= GH) or \
+            not tetris.grid[ry][rx] == TetType.NONE:
+                can_rotate = False
+                break
+
+        if can_rotate:
+            self.blocks = rotated_blocks
+
     def hard_drop(self, tetris):
         while self.is_falling:
             self.move_vertically(InputKey.DOWN, tetris)
@@ -180,6 +213,7 @@ class Tetris:
         self.queue: list[Tetronimo] = []
 
         self.drop_disabled_timer: int = 0
+        self.rotate_disabled_timer: int = 0
 
         self.populate_queue(queue_size)
         self.set_fall_interval()
@@ -250,3 +284,24 @@ class Tetris:
                 print("Game over!")
                 return True
         return False
+
+    # checks for and clears full lines, returns number of lines cleared
+    def clear_lines(self) -> int:
+        def delete_and_shift_down(yy):
+            for x in range(0, GW): # delete current line
+                self.grid[yy][x] = TetType.NONE
+            for y in range(GRID_BLOCK_OFFSET_Y, yy):
+                self.grid[y] = self.grid[y-1]
+
+        lines_cleared: int = 0
+        for y in range(GRID_BLOCK_OFFSET_Y, GH):
+            line_is_full: bool = True
+            for block in self.grid[y]:
+                if block == TetType.NONE:
+                    line_is_full = False
+                    break
+            if line_is_full:
+                lines_cleared += 1
+                delete_and_shift_down(y)
+
+        return lines_cleared

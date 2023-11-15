@@ -5,6 +5,7 @@ from tetris import Tetris, Tetronimo
 
 def handle_input(event: pygame.event, is_running: bool, tetronimo: Tetronimo, tetris: Tetronimo) -> bool:
     tetris.drop_disabled_timer -= 1
+    tetris.rotate_disabled_timer -= 1
 
     for e in event:
         if e.type == pygame.QUIT:
@@ -21,10 +22,14 @@ def handle_input(event: pygame.event, is_running: bool, tetronimo: Tetronimo, te
                     tetronimo.move_vertically(InputKey.UP, tetris)
                 case InputKey.DOWN.value:
                     tetronimo.move_vertically(InputKey.DOWN, tetris)
-                case InputKey.RROT.value:
-                    pass
                 case InputKey.LROT.value:
-                    pass
+                    if tetris.rotate_disabled_timer <= 0:
+                        tetris.rotate_disabled_timer = 10
+                        tetronimo.rotate(InputKey.LROT, tetris)
+                case InputKey.RROT.value:
+                    if tetris.rotate_disabled_timer <= 0:
+                        tetris.rotate_disabled_timer = 10
+                        tetronimo.rotate(InputKey.RROT, tetris)
                 case InputKey.DROP.value:
                     if tetris.drop_disabled_timer <= 0:
                         tetris.drop_disabled_timer = 15
@@ -33,17 +38,5 @@ def handle_input(event: pygame.event, is_running: bool, tetronimo: Tetronimo, te
                     pass
                 case _:
                     pass
-    """
-    if keys_pressed[InputKey.QUIT.value]:
-        is_running = False
-    if keys_pressed[InputKey.LEFT.value]:
-        tetronimo.move_horizontally(InputKey.LEFT, tetris)
-    if keys_pressed[InputKey.RIGHT.value]:
-        tetronimo.move_horizontally(InputKey.RIGHT, tetris)
-    if keys_pressed[InputKey.UP.value]:
-        tetronimo.move_vertically(InputKey.UP, tetris)
-    if keys_pressed[InputKey.DOWN.value]:
-        tetronimo.move_vertically(InputKey.DOWN, tetris)
-    """
 
     return is_running

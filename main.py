@@ -38,7 +38,7 @@ if __name__ == "__main__":
         if tetris.gameover():
             tetris.reset(STARTING_LEVEL, QUEUE_SIZE)
 
-        print(f"FRAME: {frame}")
+        # print(f"FRAME: {frame}")
 
         gfx.clear_screen()
         is_running = handle_input(pygame.event.get(), is_running, tetronimo, tetris)
@@ -51,6 +51,7 @@ if __name__ == "__main__":
             else:
                 dropped_piece = True
                 tetris.place_tetronimo_on_grid(tetronimo)
+                num_lines_cleared: int  = tetris.clear_lines()
                 tetronimo = tetris.get_next_tetronimo_in_queue()
 
         gfx.draw_falling_tetronimo(tetronimo)
