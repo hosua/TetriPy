@@ -4,7 +4,8 @@ from global_vars import *
 from tetris import Tetris, Tetronimo
 
 def handle_input(event: pygame.event, is_running: bool, tetronimo: Tetronimo, tetris: Tetronimo) -> bool:
-    keys_pressed = pygame.key.get_pressed()
+    tetris.drop_disabled_timer -= 1
+
     for e in event:
         if e.type == pygame.QUIT:
             is_running = False
@@ -25,7 +26,9 @@ def handle_input(event: pygame.event, is_running: bool, tetronimo: Tetronimo, te
                 case InputKey.LROT.value:
                     pass
                 case InputKey.DROP.value:
-                    pass
+                    if tetris.drop_disabled_timer <= 0:
+                        tetris.drop_disabled_timer = 15
+                        tetronimo.hard_drop(tetris)
                 case InputKey.PAUSE.value:
                     pass
                 case _:

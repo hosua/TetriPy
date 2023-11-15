@@ -164,6 +164,10 @@ Actual: {self.get_actual_blocks_on_grid()}
                 if can_move:
                     self.origin[1] -= 1
 
+    def hard_drop(self, tetris):
+        while self.is_falling:
+            self.move_vertically(InputKey.DOWN, tetris)
+
 class Tetris:
     def __init__(self, starting_level: int=0, queue_size: int=10):
         self.reset(starting_level, queue_size)
@@ -174,6 +178,8 @@ class Tetris:
         self.fall_interval: int = 0
         self.last_fall_time: int = 0
         self.queue: list[Tetronimo] = []
+
+        self.drop_disabled_timer: int = 0
 
         self.populate_queue(queue_size)
         self.set_fall_interval()

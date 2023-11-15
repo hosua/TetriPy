@@ -49,6 +49,7 @@ if __name__ == "__main__":
             if tetronimo.is_falling:
                 tetronimo.fall_once(tetris)
             else:
+                dropped_piece = True
                 tetris.place_tetronimo_on_grid(tetronimo)
                 tetronimo = tetris.get_next_tetronimo_in_queue()
 
@@ -57,6 +58,7 @@ if __name__ == "__main__":
         gfx.draw_grid_lines()
         gfx.update_screen()
         pygame.time.delay(FRAME_LENGTH)
+
         frame += 1
 
     pygame.quit()

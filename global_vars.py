@@ -4,6 +4,7 @@ from enum import Enum
 
 FPS: int = 60
 FRAME_LENGTH: int = 1000 // FPS
+DELAY_AFTER_DROP: int = 300 # delay after dropping a piece
 
 STARTING_LEVEL: int = 0
 QUEUE_SIZE: int = 10
