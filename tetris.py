@@ -150,7 +150,9 @@ Actual: {self.get_actual_blocks_on_grid()}
                 tetris.last_fall_time -= tetris.fall_interval
                 self.is_falling = False
 
-        elif key == InputKey.UP: # TODO: Disable this when no longer debugging
+        elif key == InputKey.UP:
+            # Only enable when testing
+            pass
             y_min: int = self.min('y')
             if not y_min == 0:
                 for block in grid_blocks:

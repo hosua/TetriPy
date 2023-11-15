@@ -5,6 +5,9 @@ from enum import Enum
 # 60 FPS
 FRAME_LENGTH: int = 1000 // 60
 
+STARTING_LEVEL: int = 0
+QUEUE_SIZE: int = 10
+
 SCREEN_SIZE: (int,int) = (800, 800)
 SCREEN_W, SCREEN_H = SCREEN_SIZE
 

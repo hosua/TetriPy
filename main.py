@@ -36,7 +36,7 @@ if __name__ == "__main__":
     while is_running:
         curr_time = round(time.time() * 1000)
         if tetris.gameover():
-            tetris.reset()
+            tetris.reset(STARTING_LEVEL, QUEUE_SIZE)
 
         print(f"FRAME: {frame}")
 
