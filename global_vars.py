@@ -2,6 +2,9 @@ import sys
 import pygame
 from enum import Enum
 
+# 60 FPS
+FRAME_LENGTH: int = 1000 // 60
+
 SCREEN_SIZE: (int,int) = (800, 800)
 SCREEN_W, SCREEN_H = SCREEN_SIZE
 
@@ -20,9 +23,9 @@ GRID_DIM: (int,int) = (10*BW, 20*BH)
 GRID_DIM_W, GRID_DIM_H = GRID_DIM
 
 # top left position of grid (centered)
-GRID_POS: (int,int) = ((SCREEN_W - GRID_DIM_W)/2, 0)
+# GRID_POS: (int,int) = ((SCREEN_W - GRID_DIM_W)/2, 0)
+GRID_POS: (int,int) = ((SCREEN_W - GRID_DIM_W)/2, (SCREEN_H - GRID_DIM_H)/2) # with horizontal centered
 GX, GY = GRID_POS
-# GRID_POS: (int,int) = ((SCREEN_W - GRID_DIM_W)/2, (SCREEN_H - GRID_DIM_H)/2) # with horizontal centered
 
 GRID_BLOCK_COUNT: (int,int) = (10, 25)
 GRID_BLOCK_OFFSET_Y: int = 5
@@ -56,3 +59,18 @@ class TetColor(Enum):
     T    = "#C500DB"
     S    = "#038C2C"
     Z    = "#D17A08"
+
+
+INPUT_REPEAT_DELAY: int = 100
+INPUT_REPEAT_INTERVAL: int = 50
+
+class InputKey(Enum):
+    LEFT  = pygame.K_LEFT
+    DOWN  = pygame.K_DOWN
+    UP    = pygame.K_UP
+    RIGHT = pygame.K_RIGHT
+    LROT  = pygame.K_z
+    RROT  = pygame.K_x
+    DROP  = pygame.K_SPACE
+    PAUSE = pygame.K_p
+    QUIT  = pygame.K_ESCAPE

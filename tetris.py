@@ -101,16 +101,80 @@ Actual: {self.get_actual_blocks_on_grid()}
         if self.is_falling:
             self.origin[1] += 1
 
+    def move_horizontally(self, key: InputKey, tetris):
+        grid_blocks = self.get_actual_blocks_on_grid()
+        can_move: bool = True
+
+        if key == InputKey.LEFT:
+            x_min: int = self.min('x')
+            if not x_min == 0:
+                for block in grid_blocks:
+                    x, y = block
+                    nx, ny = (x-1, y)
+                    if not tetris.grid[ny][nx] == TetType.NONE:
+                        can_move = False
+                        break
+                if can_move:
+                    self.origin[0] -= 1
+        elif key == InputKey.RIGHT:
+            x_max: int = self.max('x')
+            if not x_max == GW-1:
+                for block in grid_blocks:
+                    x, y = block
+                    nx, ny = (x+1, y)
+                    if not tetris.grid[ny][nx] == TetType.NONE:
+                        can_move = False
+                        break
+                if can_move:
+                    self.origin[0] += 1
+
+    def move_vertically(self, key: InputKey, tetris):
+        grid_blocks = self.get_actual_blocks_on_grid()
+        can_move: bool = False
+
+        if key == InputKey.DOWN:
+            y_max: int = self.max('y')
+            if not y_max == GH-1:
+                can_move = True
+                for block in grid_blocks:
+                    x, y = block
+                    nx, ny = (x, y+1)
+                    if not tetris.grid[ny][nx] == TetType.NONE:
+                        can_move = False
+                        break
+
+            if can_move:
+                self.origin[1] += 1
+            else:
+                # immediately make next fall interval trigger in the game loop
+                tetris.last_fall_time -= tetris.fall_interval
+                self.is_falling = False
+
+        elif key == InputKey.UP: # TODO: Disable this when no longer debugging
+            y_min: int = self.min('y')
+            if not y_min == 0:
+                for block in grid_blocks:
+                    x, y = block
+                    nx, ny = (x, y-1)
+                    if not tetris.grid[ny][nx] == TetType.NONE:
+                        can_move = False
+                        break
+                if can_move:
+                    self.origin[1] -= 1
 
 class Tetris:
     def __init__(self, starting_level: int=0, queue_size: int=10):
-        self.reset(starting_level)
+        self.reset(starting_level, queue_size)
 
-    def reset(self, starting_level: int=0):
+    def reset(self, starting_level: int, queue_size: int):
         self.grid = [[TetType.NONE] * GW for _ in range(GH)]
         self.level = starting_level
-        self.queue = []
-        self.populate_queue()
+        self.fall_interval: int = 0
+        self.last_fall_time: int = 0
+        self.queue: list[Tetronimo] = []
+
+        self.populate_queue(queue_size)
+        self.set_fall_interval()
         self.print_queue()
 
 
@@ -127,6 +191,23 @@ class Tetris:
         for tetronimo in self.queue:
             print(tetronimo.type, end=", ")
         print()
+
+    # Set the fall speed interval based on level
+    def set_fall_interval(self):
+        if self.level < 9:
+            self.fall_interval = (48 - (5 * (self.level + 1))) * 61;
+        elif self.level == 9:
+            self.fall_interval = 6 * 61;
+        elif self.level < 13:
+            self.fall_interval = 5 * 61;
+        elif self.level < 16:
+            self.fall_interval = 4 * 61;
+        elif self.level < 16:
+            self.fall_interval = 3 * 61;
+        elif self.level < 19:
+            self.fall_interval = 2 * 61;
+        else:
+            self.fall_interval = 1 * 61;
 
     def generate_rand_tetronimo(self) -> Tetronimo:
         rand_tet_type_num: int = random.randint(1, 7)

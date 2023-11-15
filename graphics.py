@@ -51,3 +51,5 @@ class Graphics:
             dy = GY + (y - GRID_BLOCK_OFFSET_Y)*BH
             rect = pygame.Rect(dx, dy, BW, BH)
             pygame.draw.rect(self.screen, color, rect)
+
+
