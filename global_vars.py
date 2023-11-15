@@ -4,7 +4,13 @@ from enum import Enum
 
 FPS: int = 60
 FRAME_LENGTH: int = 1000 // FPS
-DELAY_AFTER_DROP: int = 300 # delay after dropping a piece
+
+DELAY_ROT: int = 10
+DELAY_MOVE: int = 15
+DELAY_DROP: int = 15
+
+INPUT_REPEAT_DELAY: int = 200
+INPUT_REPEAT_INTERVAL: int = 50
 
 STARTING_LEVEL: int = 0
 QUEUE_SIZE: int = 10
@@ -63,10 +69,6 @@ class TetColor(Enum):
     T    = "#C500DB"
     S    = "#038C2C"
     Z    = "#D17A08"
-
-
-INPUT_REPEAT_DELAY: int = 100
-INPUT_REPEAT_INTERVAL: int = 50
 
 class InputKey(Enum):
     LEFT  = pygame.K_LEFT

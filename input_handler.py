@@ -24,15 +24,15 @@ def handle_input(event: pygame.event, is_running: bool, tetronimo: Tetronimo, te
                     tetronimo.move_vertically(InputKey.DOWN, tetris)
                 case InputKey.LROT.value:
                     if tetris.rotate_disabled_timer <= 0:
-                        tetris.rotate_disabled_timer = 10
+                        tetris.rotate_disabled_timer = DELAY_ROT
                         tetronimo.rotate(InputKey.LROT, tetris)
                 case InputKey.RROT.value:
                     if tetris.rotate_disabled_timer <= 0:
-                        tetris.rotate_disabled_timer = 10
+                        tetris.rotate_disabled_timer = DELAY_ROT
                         tetronimo.rotate(InputKey.RROT, tetris)
                 case InputKey.DROP.value:
                     if tetris.drop_disabled_timer <= 0:
-                        tetris.drop_disabled_timer = 15
+                        tetris.drop_disabled_timer = DELAY_DROP
                         tetronimo.hard_drop(tetris)
                 case InputKey.PAUSE.value:
                     pass

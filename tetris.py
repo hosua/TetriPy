@@ -287,12 +287,6 @@ class Tetris:
 
     # checks for and clears full lines, returns number of lines cleared
     def clear_lines(self) -> int:
-        def delete_and_shift_down(yy):
-            for x in range(0, GW): # delete current line
-                self.grid[yy][x] = TetType.NONE
-            for y in range(GRID_BLOCK_OFFSET_Y, yy):
-                self.grid[y] = self.grid[y-1]
-
         lines_cleared: int = 0
         for y in range(GRID_BLOCK_OFFSET_Y, GH):
             line_is_full: bool = True
@@ -301,7 +295,14 @@ class Tetris:
                     line_is_full = False
                     break
             if line_is_full:
+                # clear current line
+                for x in range(GW):
+                    self.grid[y][x] = TetType.NONE
+                # shift lines abovetcurrent y down one
+                for yy in range(y, GRID_BLOCK_OFFSET_Y+1, -1):
+                    self.grid[yy] = self.grid[yy-1]
                 lines_cleared += 1
-                delete_and_shift_down(y)
 
+        if lines_cleared:
+            print(f"Cleared {lines_cleared} lines")
         return lines_cleared
