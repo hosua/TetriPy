@@ -1,6 +1,7 @@
 import pygame
 from global_vars import *
 
+# Game graphics
 class Graphics:
     def __init__(self, screen: pygame.display):
         self.screen = screen
@@ -9,10 +10,6 @@ class Graphics:
         self.screen.fill(COLOR_BACKGROUND)
 
     def update_screen(self):
-        pygame.display.flip()
-
-    def draw_circle(self):
-        pygame.draw.circle(self.screen, (0,0,255), (250, 250), 75)
         pygame.display.flip()
 
     def draw_grid_lines(self):
@@ -54,4 +51,11 @@ class Graphics:
                 rect = pygame.Rect(dx, dy, BW, BH)
                 pygame.draw.rect(self.screen, color, rect)
 
+    def draw_ui_queue(self):
+        pass
 
+    def draw_ui_statistics(self):
+        pass
+
+    def draw_ui_score(self):
+        pass

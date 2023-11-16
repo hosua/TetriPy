@@ -152,7 +152,7 @@ Actual: {self.get_actual_blocks_on_grid()}
 
         elif key == InputKey.UP:
             # Only enable when testing
-            pass
+            pass # DISABLED
             y_min: int = self.min('y')
             if not y_min == 0:
                 for block in grid_blocks:
@@ -203,6 +203,7 @@ Actual: {self.get_actual_blocks_on_grid()}
 
 class Tetris:
     def __init__(self, starting_level: int=0, queue_size: int=10):
+        self.is_running: bool = True
         self.reset(starting_level, queue_size)
 
     def reset(self, starting_level: int, queue_size: int):
@@ -288,8 +289,7 @@ class Tetris:
     # checks for and clears full lines, returns number of lines cleared
     def clear_lines(self) -> int:
         lines_cleared: int = 0
-        # for y in range(GRID_BLOCK_OFFSET_Y, GH):
-        for y in range(GH-1, GRID_BLOCK_OFFSET_Y, -1):
+        for y in range(GRID_BLOCK_OFFSET_Y, GH):
             line_is_full: bool = True
             for block in self.grid[y]:
                 if block == TetType.NONE:

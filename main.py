@@ -26,14 +26,13 @@ if __name__ == "__main__":
     # tetronimo = Tetronimo(TetType.I)
     tetronimo = tetris.get_next_tetronimo_in_queue()
 
-    is_running: bool = True
     frame: int = 0
 
     # this will be used to calculate the delta to ensure the tetronimos fall 
     # at a rate independent from the FPS
     tetris.last_fall_time = round(time.time() * 1000)
 
-    while is_running:
+    while tetris.is_running:
         curr_time = round(time.time() * 1000)
         if tetris.gameover():
             tetris.reset(STARTING_LEVEL, QUEUE_SIZE)
@@ -41,7 +40,7 @@ if __name__ == "__main__":
         # print(f"FRAME: {frame}")
 
         gfx.clear_screen()
-        is_running = handle_input(pygame.event.get(), is_running, tetronimo, tetris)
+        handle_input(pygame.event.get(), tetronimo, tetris)
 
         delta_fall_time = curr_time - tetris.last_fall_time
         if delta_fall_time >= tetris.fall_interval:

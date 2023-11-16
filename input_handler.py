@@ -3,17 +3,17 @@ import pygame
 from global_vars import *
 from tetris import Tetris, Tetronimo
 
-def handle_input(event: pygame.event, is_running: bool, tetronimo: Tetronimo, tetris: Tetronimo) -> bool:
+def handle_input(event: pygame.event, tetronimo: Tetronimo, tetris: Tetronimo):
     tetris.drop_disabled_timer -= 1
     tetris.rotate_disabled_timer -= 1
 
     for e in event:
         if e.type == pygame.QUIT:
-            is_running = False
+            tetris.is_running = False
         if e.type == pygame.KEYDOWN:
             match e.key:
                 case InputKey.QUIT.value:
-                    is_running = False
+                    tetris.is_running = False
                 case InputKey.LEFT.value:
                     tetronimo.move_horizontally(InputKey.LEFT, tetris)
                 case InputKey.RIGHT.value:
@@ -38,5 +38,3 @@ def handle_input(event: pygame.event, is_running: bool, tetronimo: Tetronimo, te
                     pass
                 case _:
                     pass
-
-    return is_running
