@@ -5,7 +5,7 @@ from enum import Enum
 FPS: int = 60
 FRAME_LENGTH: int = 1000 // FPS
 
-DELAY_ROT: int = 10
+DELAY_ROT: int = 8
 DELAY_MOVE: int = 15
 DELAY_DROP: int = 15
 

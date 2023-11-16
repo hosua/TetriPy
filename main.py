@@ -49,7 +49,6 @@ if __name__ == "__main__":
             if tetronimo.is_falling:
                 tetronimo.fall_once(tetris)
             else:
-                dropped_piece = True
                 tetris.place_tetronimo_on_grid(tetronimo)
                 num_lines_cleared: int  = tetris.clear_lines()
                 tetronimo = tetris.get_next_tetronimo_in_queue()
