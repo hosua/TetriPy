@@ -299,7 +299,7 @@ class Tetris:
                 # clear current line
                 for x in range(GW):
                     self.grid[y][x] = TetType.NONE
-                # shift lines abovetcurrent y down one
+                # shift lines above current y down one
                 for yy in range(y, GRID_BLOCK_OFFSET_Y+1, -1):
                     self.grid[yy] = self.grid[yy-1].copy()
                 lines_cleared += 1
