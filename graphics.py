@@ -1,6 +1,10 @@
 import pygame
 from global_vars import *
 
+class PreRenders:
+    gridlines = pygame.image.load('./assets/gridlines.png')
+
+PreRenders.gridlines
 # Game graphics
 class Graphics:
     def __init__(self, screen: pygame.display):
@@ -12,17 +16,19 @@ class Graphics:
     def update_screen(self):
         pygame.display.flip()
 
+    # def draw_grid_lines(self):
+    #     ex = GX + GRID_DIM_W # end positions
+    #     ey = GY + GRID_DIM_H
+    #     # draw vertical lines
+    #     for x in range(0, GW+1):
+    #         pygame.draw.line(self.screen, COLOR_GRIDLINES, (GX + x*BW, GY), (GX + x*BW, ey))
+    #     # draw horizontal lines
+    #     for y in range(0, GHO+1):
+    #         pygame.draw.line(self.screen, COLOR_GRIDLINES, (GX, GY + y*BH), (ex, GY + y*BH))
+
+    # Instead of drawing the lines every time, we can use a pre-rendered image
     def draw_grid_lines(self):
-        ex = GX + GRID_DIM_W # end positions
-        ey = GY + GRID_DIM_H
-
-        # draw vertical lines
-        for x in range(0, GW+1):
-            pygame.draw.line(self.screen, COLOR_GRIDLINES, (GX + x*BW, GY), (GX + x*BW, ey))
-
-        # draw horizontal lines
-        for y in range(0, GHO+1):
-            pygame.draw.line(self.screen, COLOR_GRIDLINES, (GX, GY + y*BH), (ex, GY + y*BH))
+        self.screen.blit(PreRenders.gridlines, (GX, GY))
 
     # draw the tetronimos that already exist on the grid
     def draw_grid_elements(self, tetris):
