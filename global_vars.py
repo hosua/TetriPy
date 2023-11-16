@@ -49,6 +49,7 @@ INT_MIN: int = -sys.maxsize - 1
 
 COLOR_BACKGROUND = pygame.Color("#000000")
 COLOR_GRIDLINES = pygame.Color("#f5f5f5")
+COLOR_FONT = pygame.Color("#e3e3e3")
 
 class TetType(Enum):
     NONE = 0
@@ -80,3 +81,15 @@ class InputKey(Enum):
     DROP  = pygame.K_SPACE
     PAUSE = pygame.K_p
     QUIT  = pygame.K_ESCAPE
+
+PIECE_BUF_SIZE = (100, 100)
+PB_W, PB_H = PIECE_BUF_SIZE
+
+PIECE_RESIZE = (80, 80)
+PR_W, PR_H = PIECE_RESIZE
+
+PIECE_BLOCK_SIZE = (PB_W/4, PB_H/4)
+PW, PH = PIECE_BLOCK_SIZE
+
+UI_QUEUE_POS = ((GX-PR_W)/2, 50)
+UI_QUEUE_X, UI_QUEUE_Y = UI_QUEUE_POS

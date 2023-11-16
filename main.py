@@ -18,6 +18,7 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode([SCREEN_W, SCREEN_H])
 
     tetris = Tetris()
+    clock = pygame.time.Clock()
 
     gfx = Graphics(screen)
     gfx.draw_grid_lines()
@@ -34,6 +35,7 @@ if __name__ == "__main__":
 
     while tetris.is_running:
         curr_time = round(time.time() * 1000)
+        # print(pygame.mouse.get_pos())
         if tetris.gameover():
             tetris.reset(STARTING_LEVEL, QUEUE_SIZE)
 
@@ -55,10 +57,8 @@ if __name__ == "__main__":
         gfx.draw_falling_tetronimo(tetronimo)
         gfx.draw_grid_elements(tetris)
         gfx.draw_grid_lines()
+        gfx.draw_ui_queue(tetris)
         gfx.update_screen()
-        pygame.time.delay(FRAME_LENGTH)
+        clock.tick(FPS)
 
         frame += 1
-
-    pygame.quit()
-

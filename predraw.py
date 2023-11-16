@@ -1,14 +1,6 @@
 import pygame
 from global_vars import *
 
-PIECE_BUF_SIZE = (100, 100)
-PB_W, PB_H = PIECE_BUF_SIZE
-
-PIECE_BLOCK_SIZE = (PB_W/4, PB_H/4)
-PW, PH = PIECE_BLOCK_SIZE
-
-
-
 # TODO: This is unused as of now
 class Predraw:
     def __init__(self):
