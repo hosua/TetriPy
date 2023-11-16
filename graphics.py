@@ -47,9 +47,11 @@ class Graphics:
         color = pygame.Color(tetronimo.color)
         for block in blocks:
             x, y = block
-            dx = GX + x*BW
-            dy = GY + (y - GRID_BLOCK_OFFSET_Y)*BH
-            rect = pygame.Rect(dx, dy, BW, BH)
-            pygame.draw.rect(self.screen, color, rect)
+            # only render blocks in the grid
+            if y >= GRID_BLOCK_OFFSET_Y:
+                dx = GX + x*BW
+                dy = GY + (y - GRID_BLOCK_OFFSET_Y)*BH
+                rect = pygame.Rect(dx, dy, BW, BH)
+                pygame.draw.rect(self.screen, color, rect)
 
 
