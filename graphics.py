@@ -167,7 +167,11 @@ class Graphics:
                           (x+62, y), "small", COLOR_FONT)
         self.draw_ui_text(f"Level {str(tetris.level).zfill(2)}", \
                           (x+25, y+20), "small", COLOR_FONT)
+        self.draw_ui_text(f"Lines left {str(tetris.lines_until_next_level).zfill(2)}", \
+                          (x+48, y+40), "small", COLOR_FONT)
         self.draw_ui_text(f"Lines {str(tetris.lines_cleared).zfill(4)}", \
-                          (x+37, y+40), "small", COLOR_FONT)
+                          (x+37, y+60), "small", COLOR_FONT)
+        self.draw_ui_text(f"Tetris {str(tetris.tetrises).zfill(4)}", \
+                          (x+42, y+80), "small", COLOR_FONT)
 
         # "{str(tetris.score).zfill(8)}", True, COLOR_FONT)

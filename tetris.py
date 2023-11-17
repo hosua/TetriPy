@@ -95,6 +95,8 @@ Actual: {self.get_actual_blocks_on_grid()}
             self.origin[1] += 1
 
     def move(self, key: InputKey, tetris):
+        if not self.is_falling:
+            return
         grid_blocks = self.get_actual_blocks_on_grid()
         can_move: bool = True
         x_min, x_max, y_min, y_max = self.get_min_max()
@@ -132,9 +134,9 @@ Actual: {self.get_actual_blocks_on_grid()}
                         if not tetris.grid[ny][nx] == TetType.NONE:
                             can_move = False
                             break
-
                 if can_move:
                     self.origin[1] += 1
+                    tetris.score += 1
                 else:
                     # immediately make next fall interval trigger in the game loop
                     tetris.last_fall_time -= tetris.fall_interval
@@ -155,6 +157,8 @@ Actual: {self.get_actual_blocks_on_grid()}
                         self.origin[1] -= 1
 
     def rotate(self, key: InputKey, tetris):
+        if not self.is_falling:
+            return
         if self.type == TetType.O: # O piece does not rotate
             return
         # returns a copy of the rotated piece's positions. We use this to check
@@ -206,6 +210,7 @@ class Tetris:
         self.level: int = starting_level
         self.score: int = 0
         self.lines_cleared: int = 0
+        self.lines_until_next_level: int = 10
         self.tetrises: int = 0
 
 
@@ -319,6 +324,7 @@ class Tetris:
                 self.score += 300 * (self.level + 1)
             case 4:
                 self.score += 1200 * (self.level + 1)
+                self.tetrises += 1
 
     # checks for and clears full lines, returns number of lines cleared
     def clear_lines(self) -> int:
@@ -341,4 +347,10 @@ class Tetris:
         if lines_cleared:
             print(f"Cleared {lines_cleared} lines")
             self.score_calc(lines_cleared)
+            self.lines_until_next_level -= lines_cleared
+            # Handle level up if necessary
+            if self.lines_until_next_level <= 0:
+                self.level += 1
+                self.lines_until_next_level += 10
+                self.set_fall_interval()
         return lines_cleared

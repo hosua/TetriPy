@@ -24,7 +24,6 @@ def handle_input(event: pygame.event, tetris: Tetronimo):
                     pass
                 case InputKey.DOWN.value:
                     tetris.falling_tetronimo.move(InputKey.DOWN, tetris)
-                    tetris.score += 1
                 case InputKey.LROT.value:
                     if tetris.rotate_disabled_timer <= 0:
                         tetris.rotate_disabled_timer = DELAY_ROT
