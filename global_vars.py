@@ -34,7 +34,7 @@ GRID_DIM_W, GRID_DIM_H = GRID_DIM
 
 # top left position of grid (centered)
 # GRID_POS: (int,int) = ((SCREEN_W - GRID_DIM_W)/2, 0)
-GRID_POS: (int,int) = ((SCREEN_W - GRID_DIM_W)/2, (SCREEN_H - GRID_DIM_H)/2) # with horizontal centered
+GRID_POS: (int,int) = ((SCREEN_W - GRID_DIM_W)/2, (SCREEN_H - GRID_DIM_H)/2) # with vertical centered
 GX, GY = GRID_POS
 
 GRID_BLOCK_COUNT: (int,int) = (10, 25)

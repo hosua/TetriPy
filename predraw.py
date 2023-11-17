@@ -1,7 +1,9 @@
 import pygame
 from global_vars import *
 
-# TODO: This is unused as of now
+"""
+Code in this file is not used for the game, it's used to draw images to blit in the game.
+"""
 class Predraw:
     def __init__(self):
         self.grid_empty: pygame.Surface = pygame.Surface([GRID_DIM_W+1, GRID_DIM_H+1], pygame.SRCALPHA)

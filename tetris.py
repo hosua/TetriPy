@@ -52,37 +52,24 @@ Actual: {self.get_actual_blocks_on_grid()}
         for block in self.blocks:
             grid_blocks.append((self.origin[0] + block[0], self.origin[1] + block[1]))
         return grid_blocks
-    """
-    param in min/max will either take the string 'x' or 'y' and return the
-    value of the min/max of all blocks
-    """
-    def min(self, param: str) -> int:
-        m: int = INT_MAX
-        grid_blocks = self.get_actual_blocks_on_grid()
-        for block in grid_blocks:
-            if (param == 'x'):
-                m = min(m, block[0])
-            elif (param == 'y'):
-                m = min(m, block[1])
-        return m
 
-    def max(self, param: str) -> int:
-        m: int = INT_MIN
-        grid_blocks = self.get_actual_blocks_on_grid()
-        for block in grid_blocks:
-            if (param == 'x'):
-                m = max(m, block[0])
-            elif (param == 'y'):
-                m = max(m, block[1])
-        return m
+    def get_min_max(self) -> (int,int,int,int):
+        x_min, x_max, y_min, y_max = (INT_MAX,INT_MIN,INT_MAX,INT_MIN)
+        for block in self.get_actual_blocks_on_grid():
+            x, y = block
+            x_min = min(x_min, x)
+            x_max = max(x_max, x)
+            y_min = min(y_min, y)
+            y_max = max(y_max, y)
+
+        return (x_min, x_max, y_min, y_max)
+
 
     # fall down one iteration
     def fall_once(self, tetris):
         grid = tetris.grid
         grid_blocks = self.get_actual_blocks_on_grid()
-        x_min = self.min('x')
-        x_max = self.max('x')
-        y_max = self.max('y')
+        x_min, x_max, y_min, y_max = self.get_min_max()
 
         # check collision against bottom of grid
         if y_max == GH-1:
@@ -101,68 +88,65 @@ Actual: {self.get_actual_blocks_on_grid()}
         if self.is_falling:
             self.origin[1] += 1
 
-    def move_horizontally(self, key: InputKey, tetris):
+    def move(self, key: InputKey, tetris):
         grid_blocks = self.get_actual_blocks_on_grid()
         can_move: bool = True
+        x_min, x_max, y_min, y_max = self.get_min_max()
 
-        if key == InputKey.LEFT:
-            x_min: int = self.min('x')
-            if not x_min == 0:
-                for block in grid_blocks:
-                    x, y = block
-                    nx, ny = (x-1, y)
-                    if not tetris.grid[ny][nx] == TetType.NONE:
-                        can_move = False
-                        break
+        match key:
+            case InputKey.LEFT:
+                if not x_min == 0:
+                    for block in grid_blocks:
+                        x, y = block
+                        nx, ny = (x-1, y)
+                        if not tetris.grid[ny][nx] == TetType.NONE:
+                            can_move = False
+                            break
+                    if can_move:
+                        self.origin[0] -= 1
+
+            case InputKey.RIGHT:
+                if not x_max == GW-1:
+                    for block in grid_blocks:
+                        x, y = block
+                        nx, ny = (x+1, y)
+                        if not tetris.grid[ny][nx] == TetType.NONE:
+                            can_move = False
+                            break
+                    if can_move:
+                        self.origin[0] += 1
+
+            case InputKey.DOWN:
+                can_move = False
+                if not y_max == GH-1:
+                    can_move = True
+                    for block in grid_blocks:
+                        x, y = block
+                        nx, ny = (x, y+1)
+                        if not tetris.grid[ny][nx] == TetType.NONE:
+                            can_move = False
+                            break
+
                 if can_move:
-                    self.origin[0] -= 1
-        elif key == InputKey.RIGHT:
-            x_max: int = self.max('x')
-            if not x_max == GW-1:
-                for block in grid_blocks:
-                    x, y = block
-                    nx, ny = (x+1, y)
-                    if not tetris.grid[ny][nx] == TetType.NONE:
-                        can_move = False
-                        break
-                if can_move:
-                    self.origin[0] += 1
+                    self.origin[1] += 1
+                else:
+                    # immediately make next fall interval trigger in the game loop
+                    tetris.last_fall_time -= tetris.fall_interval
+                    self.is_falling = False
 
-    def move_vertically(self, key: InputKey, tetris):
-        grid_blocks = self.get_actual_blocks_on_grid()
-        can_move: bool = False
-
-        if key == InputKey.DOWN:
-            y_max: int = self.max('y')
-            if not y_max == GH-1:
-                can_move = True
-                for block in grid_blocks:
-                    x, y = block
-                    nx, ny = (x, y+1)
-                    if not tetris.grid[ny][nx] == TetType.NONE:
-                        can_move = False
-                        break
-
-            if can_move:
-                self.origin[1] += 1
-            else:
-                # immediately make next fall interval trigger in the game loop
-                tetris.last_fall_time -= tetris.fall_interval
-                self.is_falling = False
-
-        elif key == InputKey.UP:
-            # Only enable when testing
-            pass # DISABLED
-            y_min: int = self.min('y')
-            if not y_min == 0:
-                for block in grid_blocks:
-                    x, y = block
-                    nx, ny = (x, y-1)
-                    if not tetris.grid[ny][nx] == TetType.NONE:
-                        can_move = False
-                        break
-                if can_move:
-                    self.origin[1] -= 1
+            case InputKey.UP:
+                can_move = False
+                # Only enable when testing
+                pass # DISABLED
+                if not y_min == 0:
+                    for block in grid_blocks:
+                        x, y = block
+                        nx, ny = (x, y-1)
+                        if not tetris.grid[ny][nx] == TetType.NONE:
+                            can_move = False
+                            break
+                    if can_move:
+                        self.origin[1] -= 1
 
     def rotate(self, key: InputKey, tetris):
         if self.type == TetType.O: # O piece does not rotate
@@ -199,7 +183,7 @@ Actual: {self.get_actual_blocks_on_grid()}
 
     def hard_drop(self, tetris):
         while self.is_falling:
-            self.move_vertically(InputKey.DOWN, tetris)
+            self.move(InputKey.DOWN, tetris)
 
 class Tetris:
     def __init__(self, starting_level: int=0, queue_size: int=10):
