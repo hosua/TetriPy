@@ -23,6 +23,7 @@ class Graphics:
         self.screen = screen
         self.large_font = pygame.font.Font('./assets/font/8bitOperatorPlus-Regular.ttf', 30)
         self.med_font = pygame.font.Font('./assets/font/8bitOperatorPlus-Regular.ttf', 25)
+        self.small_font = pygame.font.Font('./assets/font/8bitOperatorPlus-Regular.ttf', 20)
 
     def clear_screen(self):
         self.screen.fill(COLOR_BACKGROUND)
@@ -49,9 +50,9 @@ class Graphics:
                 rect = pygame.Rect(dx, dy, BW, BH)
                 pygame.draw.rect(self.screen, color, rect)
 
-    def draw_falling_tetronimo(self, tetronimo):
-        blocks = tetronimo.get_actual_blocks_on_grid()
-        color = pygame.Color(tetronimo.color)
+    def draw_falling_tetronimo(self, tetris):
+        blocks = tetris.falling_tetronimo.get_actual_blocks_on_grid()
+        color = pygame.Color(tetris.falling_tetronimo.color)
         for block in blocks:
             x, y = block
             # only render blocks in the grid
@@ -69,6 +70,13 @@ class Graphics:
         text_rect.center = (x+35, y+20)
         self.screen.blit(text, text_rect)
 
+    def draw_ui_signature(self):
+        text = self.small_font.render('Made by Hoswoo', True, COLOR_FONT)
+        text_rect = text.get_rect()
+
+        x, y = UI_SIGNATURE_POS
+        text_rect.center = (x+35, y+20)
+        self.screen.blit(text, text_rect)
 
     def draw_ui_queue(self, tetris, count=5):
         text = self.med_font.render('Next Piece', True, COLOR_FONT)
@@ -109,7 +117,7 @@ class Graphics:
         tx += 10
         ty += 60
         self.screen.blit(PreRenders.ui_pieces[TetType.I], pos)
-        text = self.large_font.render(str(tetris.piece_counter[TetType.I]), True, COLOR_FONT)
+        text = self.med_font.render(str(tetris.piece_counter[TetType.I]), True, COLOR_FONT)
         text_rect.center = (tx, ty)
         self.screen.blit(text, text_rect)
         y += 90
@@ -117,7 +125,7 @@ class Graphics:
 
         for i in range(2, 8):
             tet_type = TetType(i)
-            text = self.large_font.render(str(tetris.piece_counter[tet_type]), True, COLOR_FONT)
+            text = self.med_font.render(str(tetris.piece_counter[tet_type]), True, COLOR_FONT)
             text_rect.center = (tx, ty)
             self.screen.blit(text, text_rect)
 
@@ -126,3 +134,36 @@ class Graphics:
             pos = (x, y)
             self.screen.blit(PreRenders.ui_pieces[tet_type], pos)
 
+    def draw_ui_hold(self, tetris):
+        text = self.med_font.render('Hold', True, COLOR_FONT)
+        text_rect = text.get_rect()
+
+        color = COLOR_FONT
+
+        x, y = UI_HOLD_POS
+        tx, ty = (x+35, y+20) # text pos
+        bx, by = (x-28, y+40) # box pos
+        px, py = (x-20, y+50) # held piece pos
+        inc_x, inc_y = (0, 60)
+
+        text_rect.center = (tx, ty)
+        self.screen.blit(text, text_rect)
+
+        box_size = (PR_W+50, PR_H+50)
+        bw, bh = box_size
+        rect = pygame.Rect(bx, by, bw, bh)
+        pygame.draw.rect(self.screen, color, rect, 1)
+
+        # don't attempt to draw the NONE type or game will go kaput
+        if not tetris.hold_piece == TetType.NONE:
+            tet_type = tetris.hold_piece.type
+
+            pos = (((bw-PR_W)/2)+bx+10, ((bh-PR_H)/2)+by+15)
+            # O and I piece are offset a little bit, so their cases need to
+            # manually be accounted for
+            if tet_type == TetType.O:
+                pos = (pos[0]+10, pos[1])
+            elif tet_type == TetType.I:
+                pos = (pos[0], pos[1]-10)
+
+            self.screen.blit(PreRenders.ui_pieces[tet_type], pos)

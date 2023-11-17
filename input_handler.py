@@ -3,7 +3,7 @@ import pygame
 from global_vars import *
 from tetris import Tetris, Tetronimo
 
-def handle_input(event: pygame.event, tetronimo: Tetronimo, tetris: Tetronimo):
+def handle_input(event: pygame.event, tetris: Tetronimo):
     tetris.drop_disabled_timer -= 1
     tetris.rotate_disabled_timer -= 1
 
@@ -15,25 +15,27 @@ def handle_input(event: pygame.event, tetronimo: Tetronimo, tetris: Tetronimo):
                 case InputKey.QUIT.value:
                     tetris.is_running = False
                 case InputKey.LEFT.value:
-                    tetronimo.move(InputKey.LEFT, tetris)
+                    tetris.falling_tetronimo.move(InputKey.LEFT, tetris)
                 case InputKey.RIGHT.value:
-                    tetronimo.move(InputKey.RIGHT, tetris)
+                    tetris.falling_tetronimo.move(InputKey.RIGHT, tetris)
                 case InputKey.UP.value:
-                    tetronimo.move(InputKey.UP, tetris)
+                    tetris.falling_tetronimo.move(InputKey.UP, tetris)
                 case InputKey.DOWN.value:
-                    tetronimo.move(InputKey.DOWN, tetris)
+                    tetris.falling_tetronimo.move(InputKey.DOWN, tetris)
                 case InputKey.LROT.value:
                     if tetris.rotate_disabled_timer <= 0:
                         tetris.rotate_disabled_timer = DELAY_ROT
-                        tetronimo.rotate(InputKey.LROT, tetris)
+                        tetris.falling_tetronimo.rotate(InputKey.LROT, tetris)
                 case InputKey.RROT.value:
                     if tetris.rotate_disabled_timer <= 0:
                         tetris.rotate_disabled_timer = DELAY_ROT
-                        tetronimo.rotate(InputKey.RROT, tetris)
+                        tetris.falling_tetronimo.rotate(InputKey.RROT, tetris)
                 case InputKey.DROP.value:
                     if tetris.drop_disabled_timer <= 0:
                         tetris.drop_disabled_timer = DELAY_DROP
-                        tetronimo.hard_drop(tetris)
+                        tetris.falling_tetronimo.hard_drop(tetris)
+                case InputKey.HOLD.value:
+                    tetris.hold()
                 case InputKey.PAUSE.value:
                     pass
                 case _:

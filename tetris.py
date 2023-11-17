@@ -13,7 +13,7 @@ class Tetronimo:
         self.blocks: list[(int,int)] = None
         self.is_falling: bool = True
         self.init_blocks()
-        self.print()
+        # self.print()
 
     def print(self):
         print(f"""-----------TETRONIMO-ATTRIBUTES-------------
@@ -24,6 +24,12 @@ Origin: {self.origin}
 Blocks: {self.blocks}
 Actual: {self.get_actual_blocks_on_grid()}
         """)
+
+    # When a piece gets held, it's position and rotation should be reset
+    def reset(self):
+        self.origin: (int,int) = [5,4]
+        self.init_blocks()
+
 
     # init blocks array based on tetronimo type
     def init_blocks(self):
@@ -196,6 +202,7 @@ class Tetris:
         self.fall_interval: int = 0
         self.last_fall_time: int = 0
         self.queue: list[Tetronimo] = []
+        self.falling_tetronimo = TetType.NONE
 
         self.drop_disabled_timer: int = 0
         self.rotate_disabled_timer: int = 0
@@ -204,10 +211,21 @@ class Tetris:
         for pc in TetType:
             self.piece_counter[pc] = 0
 
+        self.hold_piece = TetType.NONE
+        self.held_this_turn = False
+
         self.populate_queue(queue_size)
         self.set_fall_interval()
-        self.print_queue()
 
+    def hold(self):
+        if not self.held_this_turn:
+            self.held_this_turn = True
+            self.falling_tetronimo.reset()
+            if self.hold_piece == TetType.NONE:
+                self.hold_piece = self.falling_tetronimo
+                self.get_next_tetronimo_in_queue()
+            else:
+                self.hold_piece, self.falling_tetronimo = self.falling_tetronimo, self.hold_piece
 
     def print_grid(self):
         print("----------------GRID-STATE------------------")
@@ -222,6 +240,9 @@ class Tetris:
         for tetronimo in self.queue:
             print(tetronimo.type, end=", ")
         print()
+
+    def count_next_piece(self):
+        self.piece_counter[self.falling_tetronimo.type] += 1
 
     # Set the fall speed interval based on level
     def set_fall_interval(self):
@@ -240,6 +261,9 @@ class Tetris:
         else:
             self.fall_interval = 1 * FPS;
 
+    def fall_once(self):
+        self.falling_tetronimo.fall_once(self)
+
     def generate_rand_tetronimo(self) -> Tetronimo:
         rand_tet_type_num: int = random.randint(1, 7)
         rand_type = TetType(rand_tet_type_num)
@@ -250,17 +274,19 @@ class Tetris:
         for i in range(0, n):
             self.queue.append(self.generate_rand_tetronimo())
 
-    def get_next_tetronimo_in_queue(self) -> Tetronimo:
+    def get_next_tetronimo_in_queue(self):
         # get first tetronimo in queue
         tetronimo = self.queue.pop(0)
         # append new random tetronimo to end of queue
         self.queue.append(self.generate_rand_tetronimo())
-        return tetronimo
+        self.falling_tetronimo = tetronimo
+        self.count_next_piece()
 
     # When the piece stops falling, it should be placed on the actual grid
-    def place_tetronimo_on_grid(self, tetronimo):
-        blocks = tetronimo.get_actual_blocks_on_grid()
-        tet_type = tetronimo.type
+    def place_tetronimo_on_grid(self):
+        self.held_this_turn = False
+        blocks = self.falling_tetronimo.get_actual_blocks_on_grid()
+        tet_type = self.falling_tetronimo.type
         for block in blocks:
             x, y = block
             self.grid[y][x] = tet_type

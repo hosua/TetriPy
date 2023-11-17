@@ -24,8 +24,7 @@ if __name__ == "__main__":
     gfx.draw_grid_lines()
     gfx.update_screen()
 
-    tetronimo = tetris.get_next_tetronimo_in_queue()
-    tetris.piece_counter[tetronimo.type] += 1
+    tetris.get_next_tetronimo_in_queue()
 
     frame: int = 0
 
@@ -42,25 +41,28 @@ if __name__ == "__main__":
         # print(f"FRAME: {frame}")
 
         gfx.clear_screen()
-        handle_input(pygame.event.get(), tetronimo, tetris)
+        handle_input(pygame.event.get(), tetris)
 
         delta_fall_time = curr_time - tetris.last_fall_time
         if delta_fall_time >= tetris.fall_interval:
             tetris.last_fall_time = curr_time
-            if tetronimo.is_falling:
-                tetronimo.fall_once(tetris)
+            if tetris.falling_tetronimo.is_falling:
+                tetris.fall_once()
             else:
-                tetris.place_tetronimo_on_grid(tetronimo)
+                tetris.place_tetronimo_on_grid()
                 num_lines_cleared: int  = tetris.clear_lines()
-                tetronimo = tetris.get_next_tetronimo_in_queue()
-                tetris.piece_counter[tetronimo.type] += 1
+                tetris.get_next_tetronimo_in_queue()
 
-        gfx.draw_falling_tetronimo(tetronimo)
+        gfx.draw_falling_tetronimo(tetris)
         gfx.draw_grid_elements(tetris)
         gfx.draw_grid_lines()
+
         gfx.draw_ui_title()
+        gfx.draw_ui_signature()
         gfx.draw_ui_queue(tetris)
         gfx.draw_ui_statistics(tetris)
+        gfx.draw_ui_hold(tetris)
+
         gfx.update_screen()
         clock.tick(FPS)
 
