@@ -198,11 +198,16 @@ class Tetris:
 
     def reset(self, starting_level: int, queue_size: int):
         self.grid = [[TetType.NONE] * GW for _ in range(GH)]
-        self.level = starting_level
         self.fall_interval: int = 0
         self.last_fall_time: int = 0
         self.queue: list[Tetronimo] = []
-        self.falling_tetronimo = TetType.NONE
+        self.falling_tetronimo = None
+
+        self.level: int = starting_level
+        self.score: int = 0
+        self.lines_cleared: int = 0
+        self.tetrises: int = 0
+
 
         self.drop_disabled_timer: int = 0
         self.rotate_disabled_timer: int = 0
@@ -215,6 +220,7 @@ class Tetris:
         self.held_this_turn = False
 
         self.populate_queue(queue_size)
+        self.get_next_tetronimo_in_queue()
         self.set_fall_interval()
 
     def hold(self):
@@ -300,6 +306,20 @@ class Tetris:
                 return True
         return False
 
+    # 1 line        2 line          3 line          4 line
+	# 40 * (n + 1)  100 * (n + 1)   300 * (n + 1)   1200 * (n + 1)
+    def score_calc(self, lines_cleared: int):
+        self.lines_cleared += lines_cleared
+        match lines_cleared:
+            case 1:
+                self.score += 40 * (self.level + 1)
+            case 2:
+                self.score += 100 * (self.level + 1)
+            case 3:
+                self.score += 300 * (self.level + 1)
+            case 4:
+                self.score += 1200 * (self.level + 1)
+
     # checks for and clears full lines, returns number of lines cleared
     def clear_lines(self) -> int:
         lines_cleared: int = 0
@@ -320,4 +340,5 @@ class Tetris:
 
         if lines_cleared:
             print(f"Cleared {lines_cleared} lines")
+            self.score_calc(lines_cleared)
         return lines_cleared

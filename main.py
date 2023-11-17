@@ -24,8 +24,6 @@ if __name__ == "__main__":
     gfx.draw_grid_lines()
     gfx.update_screen()
 
-    tetris.get_next_tetronimo_in_queue()
-
     frame: int = 0
 
     # this will be used to calculate the delta to ensure the tetronimos fall 
@@ -37,8 +35,7 @@ if __name__ == "__main__":
         # print(pygame.mouse.get_pos())
         if tetris.gameover():
             tetris.reset(STARTING_LEVEL, QUEUE_SIZE)
-
-        # print(f"FRAME: {frame}")
+            continue
 
         gfx.clear_screen()
         handle_input(pygame.event.get(), tetris)
@@ -46,6 +43,7 @@ if __name__ == "__main__":
         delta_fall_time = curr_time - tetris.last_fall_time
         if delta_fall_time >= tetris.fall_interval:
             tetris.last_fall_time = curr_time
+            print(type(tetris.falling_tetronimo))
             if tetris.falling_tetronimo.is_falling:
                 tetris.fall_once()
             else:
@@ -59,6 +57,7 @@ if __name__ == "__main__":
 
         gfx.draw_ui_title()
         gfx.draw_ui_signature()
+        gfx.draw_ui_other_game_statistics(tetris)
         gfx.draw_ui_queue(tetris)
         gfx.draw_ui_statistics(tetris)
         gfx.draw_ui_hold(tetris)

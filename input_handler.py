@@ -19,9 +19,12 @@ def handle_input(event: pygame.event, tetris: Tetronimo):
                 case InputKey.RIGHT.value:
                     tetris.falling_tetronimo.move(InputKey.RIGHT, tetris)
                 case InputKey.UP.value:
-                    tetris.falling_tetronimo.move(InputKey.UP, tetris)
+                    # Disable unless debugging stuff
+                    # tetris.falling_tetronimo.move(InputKey.UP, tetris)
+                    pass
                 case InputKey.DOWN.value:
                     tetris.falling_tetronimo.move(InputKey.DOWN, tetris)
+                    tetris.score += 1
                 case InputKey.LROT.value:
                     if tetris.rotate_disabled_timer <= 0:
                         tetris.rotate_disabled_timer = DELAY_ROT
@@ -36,7 +39,7 @@ def handle_input(event: pygame.event, tetris: Tetronimo):
                         tetris.falling_tetronimo.hard_drop(tetris)
                 case InputKey.HOLD.value:
                     tetris.hold()
-                case InputKey.PAUSE.value:
+                case InputKey.PAUSE.value: # TODO
                     pass
                 case _:
                     pass
