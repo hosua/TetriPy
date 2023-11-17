@@ -200,6 +200,10 @@ class Tetris:
         self.drop_disabled_timer: int = 0
         self.rotate_disabled_timer: int = 0
 
+        self.piece_counter = dict()
+        for pc in TetType:
+            self.piece_counter[pc] = 0
+
         self.populate_queue(queue_size)
         self.set_fall_interval()
         self.print_queue()

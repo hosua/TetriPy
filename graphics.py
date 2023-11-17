@@ -21,7 +21,8 @@ class PreRenders:
 class Graphics:
     def __init__(self, screen: pygame.display):
         self.screen = screen
-        self.font = pygame.font.Font('./assets/font/8bitOperatorPlus-Regular.ttf', 25)
+        self.large_font = pygame.font.Font('./assets/font/8bitOperatorPlus-Regular.ttf', 30)
+        self.med_font = pygame.font.Font('./assets/font/8bitOperatorPlus-Regular.ttf', 25)
 
     def clear_screen(self):
         self.screen.fill(COLOR_BACKGROUND)
@@ -60,8 +61,17 @@ class Graphics:
                 rect = pygame.Rect(dx, dy, BW, BH)
                 pygame.draw.rect(self.screen, color, rect)
 
+    def draw_ui_title(self):
+        text = self.large_font.render('TetriPy', True, COLOR_FONT)
+        text_rect = text.get_rect()
+
+        x, y = UI_TITLE_POS
+        text_rect.center = (x+35, y+20)
+        self.screen.blit(text, text_rect)
+
+
     def draw_ui_queue(self, tetris, count=5):
-        text = self.font.render('Next Piece', True, COLOR_FONT)
+        text = self.med_font.render('Next Piece', True, COLOR_FONT)
         text_rect = text.get_rect()
 
         x, y = UI_QUEUE_POS
@@ -81,3 +91,38 @@ class Graphics:
             if tet_type == TetType.I:
                 y += i_gap
             y += inc_y
+
+    def draw_ui_statistics(self, tetris):
+        text = self.med_font.render('Statistics', True, COLOR_FONT)
+        text_rect = text.get_rect()
+
+        x, y = UI_STATS_POS
+        tx, ty = (x+35, y+20)
+        inc_x, inc_y = (0, 60)
+
+        text_rect.center = (tx, ty)
+        self.screen.blit(text, text_rect)
+
+
+        x += 30
+        pos = (x, y+50)
+        tx += 10
+        ty += 60
+        self.screen.blit(PreRenders.ui_pieces[TetType.I], pos)
+        text = self.large_font.render(str(tetris.piece_counter[TetType.I]), True, COLOR_FONT)
+        text_rect.center = (tx, ty)
+        self.screen.blit(text, text_rect)
+        y += 90
+        ty += 90
+
+        for i in range(2, 8):
+            tet_type = TetType(i)
+            text = self.large_font.render(str(tetris.piece_counter[tet_type]), True, COLOR_FONT)
+            text_rect.center = (tx, ty)
+            self.screen.blit(text, text_rect)
+
+            ty += inc_y
+            y += inc_y
+            pos = (x, y)
+            self.screen.blit(PreRenders.ui_pieces[tet_type], pos)
+

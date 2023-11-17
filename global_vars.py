@@ -45,8 +45,6 @@ GHO: int = GH-GRID_BLOCK_OFFSET_Y # grid height with offset
 INT_MAX: int = sys.maxsize
 INT_MIN: int = -sys.maxsize - 1
 
-# since we only draw the bottom 20 rows on the grid, we need to have an offset
-
 COLOR_BACKGROUND = pygame.Color("#000000")
 COLOR_GRIDLINES = pygame.Color("#f5f5f5")
 COLOR_FONT = pygame.Color("#e3e3e3")
@@ -78,6 +76,7 @@ class InputKey(Enum):
     RIGHT = pygame.K_RIGHT
     LROT  = pygame.K_z
     RROT  = pygame.K_x
+    HOLD  = pygame.K_c
     DROP  = pygame.K_SPACE
     PAUSE = pygame.K_p
     QUIT  = pygame.K_ESCAPE
@@ -91,5 +90,11 @@ PR_W, PR_H = PIECE_RESIZE
 PIECE_BLOCK_SIZE = (PB_W/4, PB_H/4)
 PW, PH = PIECE_BLOCK_SIZE
 
+UI_TITLE_POS = ((SCREEN_W-70)/2, 5)
+UI_TITLE_X, UI_TITLE_Y = UI_TITLE_POS
+
 UI_QUEUE_POS = ((GX-PR_W)/2, 50)
 UI_QUEUE_X, UI_QUEUE_Y = UI_QUEUE_POS
+
+UI_STATS_POS = (((GX-PR_W)/2) + (GRID_DIM_W+GX),50)
+UI_STATS_X, UI_STATS_Y = UI_STATS_POS

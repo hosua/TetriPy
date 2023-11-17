@@ -24,8 +24,8 @@ if __name__ == "__main__":
     gfx.draw_grid_lines()
     gfx.update_screen()
 
-    # tetronimo = Tetronimo(TetType.I)
     tetronimo = tetris.get_next_tetronimo_in_queue()
+    tetris.piece_counter[tetronimo.type] += 1
 
     frame: int = 0
 
@@ -53,11 +53,14 @@ if __name__ == "__main__":
                 tetris.place_tetronimo_on_grid(tetronimo)
                 num_lines_cleared: int  = tetris.clear_lines()
                 tetronimo = tetris.get_next_tetronimo_in_queue()
+                tetris.piece_counter[tetronimo.type] += 1
 
         gfx.draw_falling_tetronimo(tetronimo)
         gfx.draw_grid_elements(tetris)
         gfx.draw_grid_lines()
+        gfx.draw_ui_title()
         gfx.draw_ui_queue(tetris)
+        gfx.draw_ui_statistics(tetris)
         gfx.update_screen()
         clock.tick(FPS)
 
