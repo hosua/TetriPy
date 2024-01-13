@@ -43,7 +43,6 @@ if __name__ == "__main__":
         delta_fall_time = curr_time - tetris.last_fall_time
         if delta_fall_time >= tetris.fall_interval:
             tetris.last_fall_time = curr_time
-            print(type(tetris.falling_tetronimo))
             if tetris.falling_tetronimo.is_falling:
                 tetris.fall_once()
             else:
