@@ -1,5 +1,16 @@
 # TetriPy
+
 An implementation of Tetris in Python
+
+# Controls
+
+`left/right arrow keys` to move the piece.
+
+`z/x keys` to rotate the piece left/right respectively.
+
+`p` to pause the game.
+
+`esc` to quit the game at any time.
 
 # Requirements
 
