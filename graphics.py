@@ -175,3 +175,7 @@ class Graphics:
                           (x+42, y+80), "small", COLOR_FONT)
 
         # "{str(tetris.score).zfill(8)}", True, COLOR_FONT)
+
+    # draw "PAUSED" when paused
+    def draw_ui_paused(self):
+        self.draw_ui_text("PAUSED", (400, 380), "large", COLOR_FONT)

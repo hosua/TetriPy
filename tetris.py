@@ -198,9 +198,11 @@ Actual: {self.get_actual_blocks_on_grid()}
 class Tetris:
     def __init__(self, starting_level: int=0, queue_size: int=10):
         self.is_running: bool = True
+        self.is_paused: bool = False
         self.reset(starting_level, queue_size)
 
     def reset(self, starting_level: int, queue_size: int):
+        self.is_paused = False
         self.grid = [[TetType.NONE] * GW for _ in range(GH)]
         self.fall_interval: int = 0
         self.last_fall_time: int = 0

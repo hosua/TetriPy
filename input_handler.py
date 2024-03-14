@@ -3,7 +3,7 @@ import pygame
 from global_vars import *
 from tetris import Tetris, Tetronimo
 
-def handle_input(event: pygame.event, tetris: Tetronimo):
+def handle_input(event: pygame.event, tetris):
     tetris.drop_disabled_timer -= 1
     tetris.rotate_disabled_timer -= 1
 
@@ -19,7 +19,7 @@ def handle_input(event: pygame.event, tetris: Tetronimo):
                 case InputKey.RIGHT.value:
                     tetris.falling_tetronimo.move(InputKey.RIGHT, tetris)
                 case InputKey.UP.value:
-                    # Disable unless debugging stuff
+                    # Turn on for debugging
                     # tetris.falling_tetronimo.move(InputKey.UP, tetris)
                     pass
                 case InputKey.DOWN.value:
@@ -39,6 +39,19 @@ def handle_input(event: pygame.event, tetris: Tetronimo):
                 case InputKey.HOLD.value:
                     tetris.hold()
                 case InputKey.PAUSE.value: # TODO
+                    print("Paused the game.")
+                    tetris.is_paused = True
+                case _:
                     pass
+
+def handle_input_paused(event: pygame.event, tetris):
+    for e in event:
+        if e.type == pygame.QUIT:
+            tetris.is_running = False
+        if e.type == pygame.KEYDOWN:
+            match e.key:
+                case InputKey.PAUSE.value:
+                    print("Unpaused the game.")
+                    tetris.is_paused = False
                 case _:
                     pass
