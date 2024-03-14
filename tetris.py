@@ -267,9 +267,9 @@ class Tetris:
             self.fall_interval = 5 * FPS;
         elif self.level < 16:
             self.fall_interval = 4 * FPS;
-        elif self.level < 16:
-            self.fall_interval = 3 * FPS;
         elif self.level < 19:
+            self.fall_interval = 3 * FPS;
+        elif self.level < 28:
             self.fall_interval = 2 * FPS;
         else:
             self.fall_interval = 1 * FPS;

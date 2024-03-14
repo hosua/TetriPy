@@ -4,6 +4,9 @@ An implementation of Tetris in Python
 
 https://github.com/hosua/TetriPy/assets/22788738/100064d8-b6e3-45bc-9781-021b4dcaf954
 
+If you would like to start the game on a higher level, run the game with the
+starting level as the argument. e.g. `python3 main.py 30`.
+
 # Controls
 
 `left/right arrow keys` to move the piece.

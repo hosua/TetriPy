@@ -17,7 +17,16 @@ if __name__ == "__main__":
     pygame.key.set_repeat(INPUT_REPEAT_DELAY, INPUT_REPEAT_INTERVAL)
     screen = pygame.display.set_mode([SCREEN_W, SCREEN_H])
 
-    tetris = Tetris()
+    start_level: int = 0
+    if len(sys.argv) >= 2:
+        try:
+            start_level = int(sys.argv[1])
+        except ValueError as e:
+            print(e)
+            print("Assuming starting level 0.")
+            start_level = 0
+
+    tetris = Tetris(starting_level=start_level)
     clock = pygame.time.Clock()
 
     gfx = Graphics(screen)
