@@ -1,8 +1,8 @@
 import os
-import random
 
 from enum import Enum
 from global_vars import *
+import secrets
 
 class Tetronimo:
     def __init__(self, tet_type: TetType):
@@ -278,7 +278,7 @@ class Tetris:
         self.falling_tetronimo.fall_once(self)
 
     def generate_rand_tetronimo(self) -> Tetronimo:
-        rand_tet_type_num: int = random.randint(1, 7)
+        rand_tet_type_num: int = secrets.SystemRandom().randint(1, 7)
         rand_type = TetType(rand_tet_type_num)
         tetronimo = Tetronimo(rand_type)
         return tetronimo
