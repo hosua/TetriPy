@@ -45,6 +45,9 @@ GHO: int = GH-GRID_BLOCK_OFFSET_Y # grid height with offset
 INT_MAX: int = sys.maxsize
 INT_MIN: int = -sys.maxsize - 1
 
+def is_web_mode() -> bool:
+    return sys.platform == 'emscripten'
+
 COLOR_BACKGROUND = pygame.Color("#000000")
 COLOR_GRIDLINES = pygame.Color("#f5f5f5")
 COLOR_FONT = pygame.Color("#e3e3e3")

@@ -1,9 +1,7 @@
-#!tetripy-venv/bin/python3
-
+import asyncio
 import pygame
 import os
 import sys
-import time
 
 from global_vars import *
 from tetris import Tetronimo, Tetris
@@ -12,7 +10,7 @@ from input_handler import handle_input, handle_input_paused
 from graphics import Graphics
 
 
-if __name__ == "__main__":
+async def main():
     pygame.init()
     pygame.key.set_repeat(INPUT_REPEAT_DELAY, INPUT_REPEAT_INTERVAL)
     screen = pygame.display.set_mode([SCREEN_W, SCREEN_H])
@@ -35,14 +33,11 @@ if __name__ == "__main__":
 
     frame: int = 0
 
-    # this will be used to calculate the delta to ensure the tetronimos fall 
-    # at a rate independent from the FPS
-    tetris.last_fall_time = round(time.time() * 1000)
+    tetris.last_fall_time = pygame.time.get_ticks()
 
     while tetris.is_running:
         if not tetris.is_paused:
-            curr_time = round(time.time() * 1000)
-            # print(pygame.mouse.get_pos())
+            curr_time = pygame.time.get_ticks()
             if tetris.gameover():
                 tetris.reset(STARTING_LEVEL, QUEUE_SIZE)
                 continue
@@ -71,7 +66,7 @@ if __name__ == "__main__":
             gfx.draw_ui_statistics(tetris)
             gfx.draw_ui_hold(tetris)
 
-        else: # paused
+        else:
             gfx.draw_ui_paused()
             handle_input_paused(pygame.event.get(), tetris)
 
@@ -79,3 +74,8 @@ if __name__ == "__main__":
         gfx.update_screen()
 
         frame += 1
+        await asyncio.sleep(0)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

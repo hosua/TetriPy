@@ -1,29 +1,32 @@
 import pygame
+import os
 from global_vars import *
 
+def get_asset_path(path):
+    return os.path.join('assets', path) if not os.path.isabs(path) else path
+
 class PreRenders:
-    gridlines = pygame.image.load('assets/gridlines.png')
+    gridlines = pygame.image.load(get_asset_path('gridlines.png'))
     ui_pieces = {
-        TetType.I: pygame.image.load('assets/piece_I.png'),
-        TetType.O: pygame.image.load('assets/piece_O.png'),
-        TetType.T: pygame.image.load('assets/piece_T.png'),
-        TetType.L: pygame.image.load('assets/piece_L.png'),
-        TetType.J: pygame.image.load('assets/piece_J.png'),
-        TetType.S: pygame.image.load('assets/piece_S.png'),
-        TetType.Z: pygame.image.load('assets/piece_Z.png'),
+        TetType.I: pygame.image.load(get_asset_path('piece_I.png')),
+        TetType.O: pygame.image.load(get_asset_path('piece_O.png')),
+        TetType.T: pygame.image.load(get_asset_path('piece_T.png')),
+        TetType.L: pygame.image.load(get_asset_path('piece_L.png')),
+        TetType.J: pygame.image.load(get_asset_path('piece_J.png')),
+        TetType.S: pygame.image.load(get_asset_path('piece_S.png')),
+        TetType.Z: pygame.image.load(get_asset_path('piece_Z.png')),
     }
 
-    # Prerender piece sizes are too big, make them smaller
     for k, v in ui_pieces.items():
         ui_pieces[k] = pygame.transform.scale(v, (PR_W, PR_H))
 
-# Game graphics
 class Graphics:
     def __init__(self, screen: pygame.display):
         self.screen = screen
-        self.large_font = pygame.font.Font('./assets/font/8bitOperatorPlus-Regular.ttf', 30)
-        self.med_font = pygame.font.Font('./assets/font/8bitOperatorPlus-Regular.ttf', 25)
-        self.small_font = pygame.font.Font('./assets/font/8bitOperatorPlus-Regular.ttf', 20)
+        font_path = get_asset_path('font/8bitOperatorPlus-Regular.ttf')
+        self.large_font = pygame.font.Font(font_path, 30)
+        self.med_font = pygame.font.Font(font_path, 25)
+        self.small_font = pygame.font.Font(font_path, 20)
 
     def clear_screen(self):
         self.screen.fill(COLOR_BACKGROUND)

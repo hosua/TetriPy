@@ -13,7 +13,8 @@ def handle_input(event: pygame.event, tetris):
         if e.type == pygame.KEYDOWN:
             match e.key:
                 case InputKey.QUIT.value:
-                    tetris.is_running = False
+                    if not is_web_mode():
+                        tetris.is_running = False
                 case InputKey.LEFT.value:
                     tetris.falling_tetronimo.move(InputKey.LEFT, tetris)
                 case InputKey.RIGHT.value:
