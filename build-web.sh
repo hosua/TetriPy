@@ -13,7 +13,7 @@ fi
 pip install -r requirements.txt
 
 # Build the WASM version
-python -m pygbag main.py
+python -m pygbag main.py --build
 
 echo "Build complete! The game should now be available in the build/web directory."
 
