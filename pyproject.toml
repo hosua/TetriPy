@@ -1,0 +1,11 @@
+[tool.pygbag]
+freeze = [
+    ".",           # Only your game directory
+    "assets",      # If you have your own assets
+]
+
+# DO NOT bundle pygame example assets
+exclude = [
+    "pygame/examples",
+    "pygame/examples/data",
+]
